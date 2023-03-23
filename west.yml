@@ -8,9 +8,16 @@ manifest:
   remotes:
     - name: zephyrproject-rtos
       url-base: https://github.com/zephyrproject-rtos
+    - name: u-blox
+      url-base: git@github.com:u-blox
 
   projects:
     - name: zephyr
       remote: zephyrproject-rtos
-      revision: main
+      revision: v3.3.0
       import: true
+    - name: ubxlib
+      remote: u-blox
+      path: ubxlib
+      revision: v1.2.0
+      clone-depth: 1

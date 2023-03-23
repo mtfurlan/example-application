@@ -1,0 +1,39 @@
+&pinctrl {
+    spi4_default: spi4_default {
+        group1 {
+            psels = <NRF_PSEL(SPIM_MOSI, 0, 20)>,
+                <NRF_PSEL(SPIM_MISO, 0, 31)>,
+                <NRF_PSEL(SPIM_SCK, 0, 19)>;
+        };
+    };
+
+    spi4_sleep: spi4_sleep {
+        group1 {
+            psels = <NRF_PSEL(SPIM_MOSI, 0, 20)>,
+                <NRF_PSEL(SPIM_MISO, 0, 31)>,
+                <NRF_PSEL(SPIM_SCK, 0, 19)>;
+            low-power-enable;
+        };
+    };
+};
+
+// conflicts with spi4 pins
+&uart0 {
+	status = "disabled";
+};
+
+&spi4 {
+    compatible = "nordic,nrf-spim";
+    status = "okay";
+    cs-gpios = <&gpio0 17 GPIO_ACTIVE_LOW>;
+
+    pinctrl-0 = <&spi4_default>;
+    pinctrl-1 = <&spi4_sleep>;
+    pinctrl-names = "default", "sleep";
+    //ublox: ublox@0 {
+    //    compatible = "vnd,spi-device";
+    //    reg = <0>;
+    //    status = "okay";
+    //    spi-max-frequency = <5500000>; //5.5MHz from zed-f9r datasheet
+    //};
+};
