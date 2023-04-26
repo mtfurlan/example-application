@@ -22,14 +22,13 @@
 	status = "disabled";
 };
 
-&spi4 {
-	compatible = "nordic,nrf-spim";
-	status = "okay";
-	cs-gpios = <&gpio1 14 GPIO_ACTIVE_LOW>;
-
-	pinctrl-0 = <&spi2_default>;
-	pinctrl-1 = <&spi2_sleep>;
-	pinctrl-names = "default", "sleep";
+&spi2 {
+    compatible = "nordic,nrf-spim";
+    status = "okay";
+    cs-gpios = <&gpio1 14 GPIO_ACTIVE_LOW>;
+    pinctrl-0 = <&spi2_default>;
+    pinctrl-1 = <&spi2_sleep>;
+    pinctrl-names = "default", "sleep";
 	ublox: ublox@0 {
 		compatible = "vnd,spi-device";
 		reg = <0>;
