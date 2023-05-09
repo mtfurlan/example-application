@@ -76,7 +76,8 @@ static const uDeviceCfg_t gDeviceCfg = {
             .pinMiso = -1, // U_CFG_APP_PIN_GNSS_SPI_MISO,
             .pinClk = -1, // U_CFG_APP_PIN_GNSS_SPI_CLK,
             // I don't really know how this works
-            .device = U_COMMON_SPI_CONTROLLER_DEVICE_DEFAULTS(-1) // U_CFG_APP_PIN_GNSS_SPI_SELECT
+            .device = U_COMMON_SPI_CONTROLLER_DEVICE_INDEX_DEFAULTS(0) // U_CFG_APP_PIN_GNSS_SPI_SELECT
+            //.device = U_COMMON_SPI_CONTROLLER_DEVICE_DEFAULTS(32+14)
         },
     },
 #  endif

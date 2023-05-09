@@ -8,8 +8,10 @@ manifest:
   remotes:
     - name: zephyrproject-rtos
       url-base: https://github.com/zephyrproject-rtos
-    - name: u-blox
+    - name: ublox
       url-base: git@github.com:u-blox
+    - name: mtfurlan
+      url-base: git@github.com:mtfurlan
 
   projects:
     - name: zephyr
@@ -17,7 +19,7 @@ manifest:
       revision: v3.3.0
       import: true
     - name: ubxlib
-      remote: u-blox
+      remote: ublox
       path: ubxlib
-      revision: v1.2.0
+      revision: preview_fix_zephyr_spi_cs_rmea
       clone-depth: 1
