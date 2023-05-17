@@ -1,0 +1,6 @@
+/ {
+	examplesensor0: examplesensor_0 {
+		compatible = "zephyr,examplesensor";
+		input-gpios = <&gpio1 13 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+	};
+};
