@@ -1,6 +1,20 @@
-/ {
-	examplesensor0: examplesensor_0 {
-		compatible = "zephyr,examplesensor";
-		input-gpios = <&gpio1 13 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
-	};
+/{
+    i2c_bitbang: i2c_bitbang {
+        compatible = "gpio-i2c";
+        clock-frequency = <I2C_BITRATE_STANDARD>;
+        sda-gpios = <&gpio1 2 (GPIO_OPEN_DRAIN)>;
+        scl-gpios = <&gpio1 3 (GPIO_OPEN_DRAIN)>;
+        #address-cells = <1>;
+        #size-cells = <0>;
+        status = "okay";
+        eeprom_0: at24@51 {
+            reg = <0x51>;
+            compatible = "atmel,at24";
+            status = "okay";
+            size = <256>;
+            pagesize = <16>;
+            address-width = <8>;
+            timeout = <4>;
+        };
+    };
 };

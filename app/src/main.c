@@ -4,45 +4,82 @@
  */
 
 #include <zephyr/kernel.h>
-#include <zephyr/drivers/sensor.h>
+#include <zephyr/drivers/eeprom.h>
+
 
 #include "app_version.h"
 
 #include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(main, CONFIG_APP_LOG_LEVEL);
 
+#define EEPROM_SAMPLE_OFFSET 0
+#define EEPROM_SAMPLE_MAGIC  0xEE9703
+
+struct perisistant_values {
+    uint32_t magic;
+    uint32_t boot_count;
+};
+
+
 int main(void)
 {
-	int ret;
-	const struct device *sensor;
+    printk("Zephyr Example Application %s\n", APP_VERSION_STR);
 
-	printk("Zephyr Example Application %s\n", APP_VERSION_STR);
+    const struct device* const eeprom = DEVICE_DT_GET(DT_NODELABEL(eeprom_0));
+    size_t eeprom_size;
+    struct perisistant_values values;
+    int ret;
 
-	sensor = DEVICE_DT_GET(DT_NODELABEL(examplesensor0));
-	if (!device_is_ready(sensor)) {
-		LOG_ERR("Sensor not ready");
-		return 0;
-	}
+    if(!device_is_ready(eeprom)) {
+        printk(
+                "Error: Device \"%s\" is not ready; "
+                "check the driver initialization logs for errors.\n",
+                eeprom->name);
+        return 1;
+    }
 
-	while (1) {
-		struct sensor_value val;
+    printk("Found EEPROM device \"%s\n", eeprom->name);
 
-		ret = sensor_sample_fetch(sensor);
-		if (ret < 0) {
-			LOG_ERR("Could not fetch sample (%d)", ret);
-			return 0;
-		}
+    if(eeprom == NULL) {
+        printk("didn't find eeprom\n");
+        return 1;
+    }
 
-		ret = sensor_channel_get(sensor, SENSOR_CHAN_PROX, &val);
-		if (ret < 0) {
-			LOG_ERR("Could not get sample (%d)", ret);
-			return 0;
-		}
+    eeprom_size = eeprom_get_size(eeprom);
+    printk("Using eeprom with size of: %zu.\n", eeprom_size);
 
-		printk("Sensor value: %d\n", val.val1);
+    ret = eeprom_read(eeprom, EEPROM_SAMPLE_OFFSET, &values, sizeof(values));
+    if(ret != 0) {
+        printk("eeprom_read failed: %d\n", ret);
+        return 1;
+    }
 
-		k_sleep(K_MSEC(1000));
-	}
+    if (values.magic != EEPROM_SAMPLE_MAGIC) {
+        values.magic = EEPROM_SAMPLE_MAGIC;
+        values.boot_count = 0;
+    }
 
-	return 0;
+    printk("Device booted %d times.\n", values.boot_count);
+    values.boot_count++;
+    uint32_t written_boot = values.boot_count;
+
+    ret = eeprom_write(eeprom, EEPROM_SAMPLE_OFFSET, &values, sizeof(values));
+    if(ret != 0) {
+        printk("eeprom_write failed: %d\n", ret);
+        return 1;
+    }
+
+    ret = eeprom_read(eeprom, EEPROM_SAMPLE_OFFSET, &values, sizeof(values));
+    if(ret != 0) {
+        printk("eeprom_read failed: %d\n", ret);
+        return 1;
+    }
+
+    if(values.magic != EEPROM_SAMPLE_MAGIC) {
+        printk("magic byte differs, expected %06X got %06X", EEPROM_SAMPLE_MAGIC, values.magic);
+    }
+    if(values.boot_count != written_boot) {
+        printk("boot count differs, expected %d got %d", written_boot, values.boot_count);
+    }
+    return 0;
 }
