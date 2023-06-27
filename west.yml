@@ -19,7 +19,7 @@ manifest:
       revision: v3.3.0
       import: true
     - name: ubxlib
-      remote: ublox
+      remote: mtfurlan
       path: ubxlib
-      revision: preview_fix_zephyr_spi_cs_rmea
-      clone-depth: 1
+      revision: build/unity-via-in-zephyr
+      import: true
