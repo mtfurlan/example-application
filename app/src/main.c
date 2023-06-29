@@ -64,7 +64,8 @@ static const uDeviceCfg_t gDeviceCfg = {
             // be ignored.
         },
     },
-#  else
+#endif
+#if defined(U_CFG_APP_GNSS_SPI) &&  (U_CFG_APP_GNSS_SPI >= 0)
     .transportType = U_DEVICE_TRANSPORT_TYPE_SPI,
     .transportCfg = {
         .cfgSpi = {

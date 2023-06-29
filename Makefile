@@ -4,7 +4,7 @@ help:   ## Show this help.
 
 REPO_ROOT ?= ../
 
-BOARDS := nrf5340dk_nrf5340_cpuapp rf52840dk_nrf52840
+BOARDS := nrf5340dk_nrf5340_cpuapp nrf52840dk_nrf52840 d2v_hdk4_cpuapp
 BOARD ?= nrf5340dk_nrf5340_cpuapp
 
 ifeq ($(BOARD),nrf5340dk_nrf5340_cpuapp)
