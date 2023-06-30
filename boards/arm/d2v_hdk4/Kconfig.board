@@ -1,0 +1,15 @@
+# D2V HDK v4 NRF5340 board configuration
+
+# Copyright (c) 2019-2020 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+if SOC_NRF5340_CPUAPP_QKAA
+
+config BOARD_D2V_HDK4_CPUAPP
+	bool "D2V HDK v4 nRF5340 Application MCU"
+
+endif # SOC_NRF5340_CPUAPP_QKAA
+
+config BOARD_D2V_HDK4_CPUNET
+	bool "D2V HDK v4 NRF5340 Network MCU"
+	depends on SOC_NRF5340_CPUNET_QKAA

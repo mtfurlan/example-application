@@ -1,0 +1,15 @@
+identifier: d2v_hdk4_cpunet
+name: D2V-HDK4-network-MCU
+type: mcu
+arch: arm
+toolchain:
+  - gnuarmemb
+  - xtools
+  - zephyr
+ram: 64
+flash: 256
+supported:
+  - gpio
+  - i2c
+  - spi
+  - watchdog

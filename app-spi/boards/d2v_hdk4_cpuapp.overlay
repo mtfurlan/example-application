@@ -1,0 +1,9 @@
+
+&spi4 {
+	ublox: ublox@0 {
+		compatible = "vnd,spi-device";
+		reg = <0>;
+		status = "okay";
+		spi-max-frequency = <5500000>; //5.5MHz from zed-f9r datasheet
+	};
+};
