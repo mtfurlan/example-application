@@ -89,7 +89,7 @@ static bool get_version(const struct spi_dt_spec* spec)
 
 void main(void)
 {
-    printk("Zephyr Example Application %s\n", APP_VERSION_STR);
+    printk("direct spi test %s\n", APP_VERSION_STR);
     while (!spi_is_ready_dt(&spi_ublox)) {
         k_msleep(5);
     }

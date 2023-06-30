@@ -158,7 +158,7 @@ static void callback(uDeviceHandle_t gnssHandle,
 
 void main(void)
 {
-    printk("Zephyr Example Application %s\n", APP_VERSION_STR);
+    printk("ubxlib test %s\n", APP_VERSION_STR);
 
     uDeviceHandle_t devHandle = NULL;
     int32_t returnCode;
@@ -176,7 +176,7 @@ void main(void)
 
     // Open the device
     returnCode = uDeviceOpen(&gDeviceCfg, &devHandle);
-    uPortLog("Opened device with return code %d.\n", returnCode);
+    printk("Opened device with return code %d.\n", returnCode);
 
     if (returnCode == 0) {
         // Since we are not using the common APIs we do not need
