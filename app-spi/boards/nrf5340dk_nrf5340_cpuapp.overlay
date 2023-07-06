@@ -1,17 +1,19 @@
 &pinctrl {
-    spi2_default: spi2_default {
+    spi4_default: spi4_default {
         group1 {
-            psels = <NRF_PSEL(SPIM_SCK, 0, 27)>,
-                    <NRF_PSEL(SPIM_MISO, 0, 25)>,
-                    <NRF_PSEL(SPIM_MOSI, 0, 26)>;
+            psels =
+                    <NRF_PSEL(SPIM_MOSI, 0, 20)>,
+                    <NRF_PSEL(SPIM_MISO, 0, 31)>,
+                    <NRF_PSEL(SPIM_SCK, 0, 19)>;
         };
     };
 
-    spi2_sleep: spi2_sleep {
+    spi4_sleep: spi4_sleep {
         group1 {
-            psels = <NRF_PSEL(SPIM_SCK, 0, 27)>,
-                    <NRF_PSEL(SPIM_MISO, 0, 25)>,
-                    <NRF_PSEL(SPIM_MOSI, 0, 26)>;
+            psels =
+                    <NRF_PSEL(SPIM_MOSI, 0, 20)>,
+                    <NRF_PSEL(SPIM_MISO, 0, 31)>,
+                    <NRF_PSEL(SPIM_SCK, 0, 19)>;
             low-power-enable;
         };
     };
@@ -22,12 +24,12 @@
 	status = "disabled";
 };
 
-&spi2 {
+&spi4 {
     compatible = "nordic,nrf-spim";
     status = "okay";
-    cs-gpios = <&gpio1 14 GPIO_ACTIVE_LOW>;
-    pinctrl-0 = <&spi2_default>;
-    pinctrl-1 = <&spi2_sleep>;
+    cs-gpios = <&gpio0 17 GPIO_ACTIVE_LOW>;
+    pinctrl-0 = <&spi4_default>;
+    pinctrl-1 = <&spi4_sleep>;
     pinctrl-names = "default", "sleep";
 	ublox: ublox@0 {
 		compatible = "vnd,spi-device";
