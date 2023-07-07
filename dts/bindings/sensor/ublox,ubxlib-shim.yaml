@@ -1,0 +1,34 @@
+description: |
+  A shim to put ubxlib in the devicetree
+
+  Example definition in devicetree:
+
+    examplesensor {
+        compatible = "zephyr,examplesensor";
+        input-gpios = <&gpio0 0 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+    };
+
+compatible: "ublox,ubxlib-shim"
+
+include: base.yaml
+
+properties:
+  bus-type:
+    type: int
+    enum:
+      - 0
+      - 1
+    required: true
+    description: type of bus it's on, 0=spi, 1=i2c
+  bus-num:
+    type: int
+    required: true
+    description: what number bus it's on (4 for spi4, for example)
+  module-type:
+    type: int
+    enum:
+      - 0
+      - 1
+      - 2
+    required: true
+    description: What type of ublox module, M8=0, M9=1, M10=2

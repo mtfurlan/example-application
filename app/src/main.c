@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2021 Nordic Semiconductor ASA
- * SPDX-License-Identifier: Apache-2.0
- */
-
 #include <zephyr/kernel.h>
 #include <zephyr/drivers/sensor.h>
 
@@ -11,6 +6,26 @@
 
 #include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(main, CONFIG_APP_LOG_LEVEL);
+
+
+#define UBLOX DT_NODELABEL(ublox)
+#ifdef UBLOX
+    #if DT_PROP(UBLOX, bus_type) == 0 // spi
+        #pragma message ( "spi" )
+        #define U_CFG_APP_GNSS_SPI DT_PROP(UBLOX, bus_num)
+    #elif DT_PROP(UBLOX, bus_type) == 1 // i2c
+        #pragma message ( "i2c" )
+        #define U_CFG_APP_GNSS_I2C DT_PROP(UBLOX, bus_num)
+    #else
+        #warning "bad ublox dts config"
+    #endif
+    #define U_CFG_TEST_GNSS_MODULE_TYPE DT_PROP(UBLOX, module_type)
+#else
+    #warning "no ublox in dts?"
+#endif
+
+#define U_GNSS_PRIVATE_DEBUG_PARSING
+
 
 // This is mostly directly taken from ubxlib/example/gnss/pos_main.c
 

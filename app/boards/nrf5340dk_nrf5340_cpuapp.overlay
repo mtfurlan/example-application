@@ -31,4 +31,11 @@
     pinctrl-0 = <&spi4_default>;
     pinctrl-1 = <&spi4_sleep>;
     pinctrl-names = "default", "sleep";
+	ublox: ublox@0 {
+		compatible = "ublox,ubxlib-shim";
+		reg = <0>;
+		bus-num = <4>;
+		bus-type = <0>; // 0 is spi, 1 is i2c
+		module-type = <1>; // 0 is M8, 1 is M9, 2 is M10
+	};
 };

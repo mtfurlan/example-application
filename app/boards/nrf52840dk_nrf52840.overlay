@@ -24,9 +24,16 @@
     pinctrl-0 = <&i2c0_default>;
     pinctrl-1 = <&i2c0_sleep>;
     pinctrl-names = "default", "sleep";
+	ublox: ublox@0 {
+		compatible = "ublox,ubxlib-shim";
+		reg = <0>;
+		bus-num = <0>;
+		bus-type = <1>; // 0 is spi, 1 is i2c
+		module-type = <0>; // 0 is M8, 1 is M9, 2 is M10
+	};
 };
 
-//TODO: If I don't do this, I get build errors like
+//If I don't do this, I get build errors like
 // $zephyrRoot/ubxlib/port/platform/zephyr/src/u_port_spi.c:260: undefined reference to `__device_dts_ord_108'
 // I think because of stuff like this:
 // of pDevice = DEVICE_DT_GET_OR_NULL(DT_NODELABEL(spi3));
