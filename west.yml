@@ -8,8 +8,14 @@ manifest:
   remotes:
     - name: zephyrproject-rtos
       url-base: https://github.com/zephyrproject-rtos
+    - name: br101
+      url-base: https://github.com/br101
 
   projects:
+    - name: zephyr-dw3000-decadriver
+      remote: br101
+      revision: master
+      path: modules/lib/zephyr-dw3000-decadriver
     - name: zephyr
       remote: zephyrproject-rtos
       revision: main

@@ -1,0 +1,15 @@
+&spi3 {
+    dwm3000@0 {
+        compatible = "decawave,dw3000";
+        label = "DW3000";
+        spi-max-frequency = <1000000>;
+
+        reset-gpios = <&gpio0 25 GPIO_ACTIVE_LOW>;
+        irq-gpios = <&gpio1 2 GPIO_ACTIVE_LOW>;
+        //wakeup-gpios = <&gpio0 8 GPIO_ACTIVE_HIGH>;
+        //spi-pol-gpios = <&gpio0 0 GPIO_ACTIVE_LOW>;
+        //spi-pha-gpios = <&gpio0 0 GPIO_ACTIVE_LOW>;
+        reg = <0>;
+        status = "okay";
+    };
+};

@@ -7,74 +7,45 @@
 #include <zephyr/drivers/sensor.h>
 #include <zephyr/logging/log.h>
 
-#include <app/drivers/blink.h>
+#include <dw3000.h>
 
 #include <app_version.h>
 
 LOG_MODULE_REGISTER(main, CONFIG_APP_LOG_LEVEL);
 
-#define BLINK_PERIOD_MS_STEP 100U
-#define BLINK_PERIOD_MS_MAX  1000U
-
 int main(void)
 {
-	int ret;
-	unsigned int period_ms = BLINK_PERIOD_MS_MAX;
-	const struct device *sensor, *blink;
-	struct sensor_value last_val = { 0 }, val;
+    int err;
+    printk("Zephyr Example Application %s\n", APP_VERSION_STRING);
 
-	printk("Zephyr Example Application %s\n", APP_VERSION_STRING);
+    dw3000_hw_init();
+    dw3000_hw_reset();
+    dw3000_hw_init_interrupt();
+    dw3000_spi_speed_fast();
+    k_msleep(2);
 
-	sensor = DEVICE_DT_GET(DT_NODELABEL(example_sensor));
-	if (!device_is_ready(sensor)) {
-		LOG_ERR("Sensor not ready");
-		return 0;
-	}
 
-	blink = DEVICE_DT_GET(DT_NODELABEL(blink_led));
-	if (!device_is_ready(blink)) {
-		LOG_ERR("Blink LED not ready");
-		return 0;
-	}
+    // cast to disgard const
+    if((err = dwt_probe((struct dwt_probe_s *)&dw3000_probe_interf)) != DWT_SUCCESS) {
+        LOG_ERR("failed to dwt_probe: %d", err);
+        return 1;
+    }
 
-	ret = blink_off(blink);
-	if (ret < 0) {
-		LOG_ERR("Could not turn off LED (%d)", ret);
-		return 0;
-	}
+    uint32_t dev_id = dwt_readdevid();
+    LOG_INF("dev id: 0x%04X", dev_id);
 
-	printk("Use the sensor to change LED blinking period\n");
+    /* Reads and validate device ID returns DWT_ERROR if it does not match expected else DWT_SUCCESS */
+    if ((err = dwt_check_dev_id()) != DWT_SUCCESS) {
+        LOG_ERR("DEV ID FAILED %d", err);
+        return 1;
+    }
+    LOG_INF("DEV ID OK");
 
-	while (1) {
-		ret = sensor_sample_fetch(sensor);
-		if (ret < 0) {
-			LOG_ERR("Could not fetch sample (%d)", ret);
-			return 0;
-		}
+    // this causes
+    // .../zephyr-dw3000-decadriver/platform/deca_compat.c:2571: undefined reference to `ull_getframelength'
+    uint8_t foo = 5;
+    dwt_getframelength(&foo);
 
-		ret = sensor_channel_get(sensor, SENSOR_CHAN_PROX, &val);
-		if (ret < 0) {
-			LOG_ERR("Could not get sample (%d)", ret);
-			return 0;
-		}
-
-		if ((last_val.val1 == 0) && (val.val1 == 1)) {
-			if (period_ms == 0U) {
-				period_ms = BLINK_PERIOD_MS_MAX;
-			} else {
-				period_ms -= BLINK_PERIOD_MS_STEP;
-			}
-
-			printk("Proximity detected, setting LED period to %u ms\n",
-			       period_ms);
-			blink_set_period_ms(blink, period_ms);
-		}
-
-		last_val = val;
-
-		k_sleep(K_MSEC(100));
-	}
-
-	return 0;
+    return 0;
 }
 

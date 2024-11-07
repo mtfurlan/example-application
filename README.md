@@ -1,4 +1,14 @@
-# Zephyr Example Application
+# build issue demonstrator for zephyr-dw3000-decadriver
+
+```
+west init -m https://github.com/mtfurlan/example-application --mr dw3000 my-workspace
+cd my-workspace/example-application
+west update
+west build --board nrf52840dk_nrf52840 app/
+```
+
+****
+
 
 <a href="https://github.com/zephyrproject-rtos/example-application/actions/workflows/build.yml?query=branch%3Amain">
   <img src="https://github.com/zephyrproject-rtos/example-application/actions/workflows/build.yml/badge.svg?event=push">
